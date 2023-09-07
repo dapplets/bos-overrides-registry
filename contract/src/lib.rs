@@ -36,11 +36,15 @@ impl Default for MutationRegistry {
 impl MutationRegistry {
     pub fn create_mutation(
         &mut self,
-        id: String,
+        author_id: AccountId,
+        mutation_id: String,
         description: String,
         overrides: Vec<Override>,
     ) -> bool {
-        let author_id = env::signer_account_id();
+        if env::signer_account_id() != author_id {
+            env::panic_str("Mutations: permission denied");
+        }
+
         let new_mutation = Mutation {
             description,
             overrides,
@@ -50,7 +54,7 @@ impl MutationRegistry {
             UnorderedMap::new(format!("mutations-{}", author_id).as_bytes().to_vec())
         });
 
-        author_mutations.insert(&id, &new_mutation);
+        author_mutations.insert(&mutation_id, &new_mutation);
         self.mutations.insert(&author_id, &author_mutations);
 
         true
@@ -58,29 +62,33 @@ impl MutationRegistry {
 
     pub fn update_mutation(
         &mut self,
-        id: String,
-        new_description: Option<String>,
-        new_overrides: Option<Vec<Override>>,
+        author_id: AccountId,
+        mutation_id: String,
+        description: Option<String>,
+        overrides: Option<Vec<Override>>,
     ) {
-        let author_id = env::signer_account_id();
+        if env::signer_account_id() != author_id {
+            env::panic_str("Mutations: permission denied");
+        }
+
         if let Some(mut author_mutations) = self.mutations.get(&author_id) {
-            if let Some(mut mutation) = author_mutations.get(&id) {
-                if let Some(description) = new_description {
+            if let Some(mut mutation) = author_mutations.get(&mutation_id) {
+                if let Some(description) = description {
                     mutation.description = description;
                 }
 
-                if let Some(overrides) = new_overrides {
+                if let Some(overrides) = overrides {
                     mutation.overrides = overrides;
                 }
 
-                author_mutations.insert(&id, &mutation);
+                author_mutations.insert(&mutation_id, &mutation);
             }
         }
     }
 
-    pub fn get_mutation(&self, author_id: AccountId, id: String) -> Option<Mutation> {
+    pub fn get_mutation(&self, author_id: AccountId, mutation_id: String) -> Option<Mutation> {
         let author_mutations = self.mutations.get(&author_id)?;
-        author_mutations.get(&id)
+        author_mutations.get(&mutation_id)
     }
 
     pub fn get_all_mutations(&self) -> Vec<(AccountId, String, Mutation)> {
@@ -99,10 +107,10 @@ impl MutationRegistry {
         all_mutations
     }
 
-    pub fn get_mutations_by_author(&self, author: AccountId) -> Vec<(String, Mutation)> {
+    pub fn get_mutations_by_author(&self, author_id: AccountId) -> Vec<(String, Mutation)> {
         let mut mutations_vec = Vec::new();
 
-        if let Some(author_mutations) = self.mutations.get(&author) {
+        if let Some(author_mutations) = self.mutations.get(&author_id) {
             for id in author_mutations.keys() {
                 if let Some(mutation) = author_mutations.get(&id) {
                     mutations_vec.push((id, mutation));

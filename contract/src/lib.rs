@@ -87,10 +87,8 @@ impl MutationRegistry {
         let mut all_mutations = Vec::new();
 
         for author_id in self.mutations.keys() {
-            // Removed `.iter()`
             if let Some(author_mutations) = self.mutations.get(&author_id) {
                 for id in author_mutations.keys() {
-                    // Removed `.iter()`
                     if let Some(mutation) = author_mutations.get(&id) {
                         all_mutations.push((author_id.clone(), id, mutation));
                     }
@@ -106,7 +104,6 @@ impl MutationRegistry {
 
         if let Some(author_mutations) = self.mutations.get(&author) {
             for id in author_mutations.keys() {
-                // Removed `.iter()`
                 if let Some(mutation) = author_mutations.get(&id) {
                     mutations_vec.push((id, mutation));
                 }

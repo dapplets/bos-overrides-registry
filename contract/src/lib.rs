@@ -41,7 +41,7 @@ impl MutationRegistry {
         description: String,
         overrides: Vec<Override>,
     ) -> bool {
-        if env::signer_account_id() != author_id {
+        if env::predecessor_account_id() != author_id {
             env::panic_str("Mutations: permission denied");
         }
 
@@ -67,7 +67,7 @@ impl MutationRegistry {
         description: Option<String>,
         overrides: Option<Vec<Override>>,
     ) {
-        if env::signer_account_id() != author_id {
+        if env::predecessor_account_id() != author_id {
             env::panic_str("Mutations: permission denied");
         }
 

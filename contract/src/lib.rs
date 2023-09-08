@@ -86,6 +86,45 @@ impl MutationRegistry {
         }
     }
 
+    pub fn copy_overrides(
+        &mut self,
+        source_author_id: AccountId,
+        source_mutation_id: String,
+        target_author_id: AccountId,
+        target_mutation_id: String
+    ) {
+        if env::predecessor_account_id() != target_author_id {
+            env::panic_str("Mutations: permission denied");
+        }
+        
+        // Get source mutations
+        let source_mutations = self.mutations.get(&source_author_id);
+        let source_mutation = match source_mutations {
+            Some(mutations) => mutations.get(&source_mutation_id),
+            None => None
+        };
+    
+        let source_overrides = match source_mutation {
+            Some(mutation) => mutation.overrides,
+            None => {
+                env::panic_str("Source mutation not found");
+            }
+        };
+    
+        // Get target mutation
+        let mut target_mutations = self.mutations.get(&target_author_id).unwrap_or_else(|| {
+            UnorderedMap::new(format!("mutations-{}", target_author_id).as_bytes().to_vec())
+        });
+    
+        if let Some(mut target_mutation) = target_mutations.get(&target_mutation_id) {
+            target_mutation.overrides = source_overrides;
+            target_mutations.insert(&target_mutation_id, &target_mutation);
+            self.mutations.insert(&target_author_id, &target_mutations);
+        } else {
+            env::panic_str("Target mutation not found");
+        }
+    }
+
     pub fn get_mutation(&self, author_id: AccountId, mutation_id: String) -> Option<Mutation> {
         let author_mutations = self.mutations.get(&author_id)?;
         author_mutations.get(&mutation_id)

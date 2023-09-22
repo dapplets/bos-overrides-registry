@@ -1,5 +1,12 @@
 ![image](https://github.com/dapplets/bos-overrides-registry/blob/main/bos-overrides-registry.jpeg)
 
+During the [BOSHACKS hackathon](https://www.boshacks.com/#/devgovgigs.near/widget/gigs-board.pages.Post?id=1377), we created a new technology called Mutable Web which brings the decentralization of [BOS components](https://near.org/near/widget/ComponentsPage) to a new level. This technology allows any user to create a mutation of a page in a permissionless way and offer it to the community. The community can accept it as the default version of the page.
+This way community can create special [BOS components](https://near.org/near/widget/ComponentsPage) to add new functions, services, and workflows where needed. All this could be implemented in a decentralized and permissionless way, fully aligned with the paradigm of the free web.
+
+This project won the General Prize - 1st Place, you can read more details in the submission: [Dapplets Mutable Web](https://www.boshacks.com/#/devgovgigs.near/widget/gigs-board.pages.Post?id=1236)
+
+See our demo video at YouTube : [Dapplets Mutable Web](https://www.youtube.com/watch?v=DykC47Ec0zc)
+
 near-blank-project
 ==================
 

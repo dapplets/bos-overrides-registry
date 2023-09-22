@@ -1,3 +1,5 @@
+![image](https://github.com/dapplets/bos-overrides-registry/blob/main/bos-overrides-registry.jpeg)
+
 near-blank-project
 ==================
 

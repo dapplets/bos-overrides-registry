@@ -5,7 +5,7 @@ This way community can create special [BOS components](https://near.org/near/wid
 
 This project won the General Prize - 1st Place, you can read more details in the submission: [Dapplets Mutable Web](https://www.boshacks.com/#/devgovgigs.near/widget/gigs-board.pages.Post?id=1236)
 
-See our demo video at YouTube : [Dapplets Mutable Web](https://www.youtube.com/watch?v=DykC47Ec0zc)
+See our demo video on YouTube : [Dapplets Mutable Web](https://www.youtube.com/watch?v=DykC47Ec0zc)
 
 near-blank-project
 ==================
